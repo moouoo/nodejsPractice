@@ -1,5 +1,9 @@
 "use strict";
 
+const { post } = require("../../../routes/home");
+
+
+
 // #은 태그의 id에 부여되어있는 것을 가져오는 것 -> <input id="이부분" />
 const mid = document.querySelector("#mid"),
     pwd = document.querySelector("#pwd"),
@@ -20,5 +24,13 @@ function login(){
     };
 
     console.log(req);
+    console.log(JSON.stringify(req));
 
+    fetch("/login", {
+        method : "post",
+        headers : {
+            "Content-Type" : "application/json"
+        },
+        body : JSON.stringify(req)
+    });
 }
