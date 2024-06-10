@@ -3,7 +3,7 @@
 // #은 태그의 id에 부여되어있는 것을 가져오는 것 -> <input id="이부분" />
 const mid = document.querySelector("#mid"),
     pwd = document.querySelector("#pwd"),
-    loginBtn = document.querySelector("button");
+    loginBtn = document.querySelector("#button");
 
 // console.log(mid);
 // console.log(pwd);
