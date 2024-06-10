@@ -7,11 +7,9 @@ class User{
         this.body = body;
     };
 
-    login(){
+    async login(){ // 비동기 함수로 바꿔주는 async, await를 사용할려면 필수이다.
         const client = this.body;
-        const {mid, pwd} = UserStorage.getUserInfo(client.mid);
-        // const a = UserStorage.getUserInfo("admin");
-        // console.log(a);
+        const {mid,pwd} = await UserStorage.getUserInfo(client.mid);
 
         if(mid){
             if(mid === client.mid && pwd === client.pwd){
