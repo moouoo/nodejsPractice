@@ -10,11 +10,14 @@ const mid = document.querySelector("#mid"),
     registerBtn.addEventListener("click", register);
 
 function register(){
+    if(!mid.value) return alert("아이디를 입력해주세요");
+    if(!pwd.value) return alert("비밀번호를 입력해주세요");
+    if(pwd !== confirmPwd) return alert("비밀번호가 일치하지 않습니다.");
+
     const req = {
         mid: mid.value,
         name : name.value,
         pwd: pwd.value,
-        confirmPwd: confirmPwd.value,
     };
 
     fetch("/register", {
