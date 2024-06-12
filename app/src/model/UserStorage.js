@@ -18,10 +18,9 @@ class UserStorage{
         return userInfo;
     };
 
-    // class 자체에서 매소드를 접근을 할려면 똑같이 static을 사용해야한다.
-    static getUsers(...fields){
-
-        // const users = this.#users;
+    static #getUsers(data, isAll, fields){
+        const users = JSON.parse(data);
+        if(isAll) return users;
         const newUsers = fields.reduce((newUsers, field) => {
             if (users.hasOwnProperty(field)){
                 newUsers[field] = users[field];
@@ -29,6 +28,15 @@ class UserStorage{
             return newUsers;
         }, {});
         return newUsers;
+    };
+
+    // class 자체에서 매소드를 접근을 할려면 똑같이 static을 사용해야한다.
+    static getUsers(isAll, ...fields){
+        return fs.readFile("./src/databases/users.json")
+        .then((data) => {
+            return this.#getUsers(data, isAll, fields);
+        }) // 성공시
+        .catch(console.error); // 실패시
     };
 
     static getUserInfo(mid){
@@ -39,12 +47,23 @@ class UserStorage{
             .catch(console.error); // 실패시
     };
 
-    static save(userInfo){
-        // const users = this.#users;
-        users.mid.push(userInfo.mid);
-        users.name.push(userInfo.name);
-        users.pwd.push(userInfo.pwd);
-        return { success : true };
+    static async save(userInfo){
+        const users = await this.getUsers(true);
+
+        console.log(users);
+
+        if(users.mid.includes(userInfo.mid)){
+           throw "이미 존재하는 아이디입니다.";
+        }
+        else{
+            users.mid.push(userInfo.mid);
+            users.pwd.push(userInfo.pwd);
+            users.name.push(userInfo.name);
+        }
+
+        // 데이터추가
+        fs.writeFile("./src/databases/users.json", JSON.stringify(users));
+        return {success : true};
     };
 };
 

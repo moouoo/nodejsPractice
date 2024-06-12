@@ -6,7 +6,7 @@ class User{
     constructor(body){
         this.body = body;
     };
-
+    
     async login(){ // 비동기 함수로 바꿔주는 async, await를 사용할려면 필수이다.
         const client = this.body;
         const {mid,pwd} = await UserStorage.getUserInfo(client.mid);
@@ -20,10 +20,15 @@ class User{
         return {success : false, msg : "존재하지 않은 아이디"};
     };
 
-    register(){
+    async register(){
         const client = this.body;
-        const response =  UserStorage.save(client);
-        return response;
+        try{
+            const response =  await UserStorage.save(client);
+            return response;
+        }
+        catch(err){
+            return {success : false, msg : err};
+        }
     };
 };
 
